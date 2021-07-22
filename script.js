@@ -21,24 +21,32 @@ const generateInfo = async () => {
     arr.push(obj);
 }
 
+let generatePosts = async () => {
+    arr.forEach(el => {
+        details.innerHTML += `
+                                <div class="details">
+                                    <div class="user_photo horizontal_center" id="${el.id}">
+                                        <img src="${el.picture}">
+                                    </div>
+                                    <p id="user_title">Hi, My name is</p>
+                                    <p id="user_value" style="text-transform: capitalize;">${el.userName}</p>
+                                </div>`; 
+    });
+}
+
 let renderUsers = async () => {
         for (let i = 0; i < 12; i++) {
              await generateInfo();  
         }
-       
-        arr.forEach(el => {
-            details.innerHTML += `
-                                    <div class="details">
-                                        <div class="user_photo horizontal_center" id="${el.id}">
-                                            <img src="${el.picture}">
-                                        </div>
-                                        <p id="user_title">Hi, My name is</p>
-                                        <p id="user_value" style="text-transform: capitalize;">${el.userName}</p>
-                                    </div>`; 
-        });
+        generatePosts();
     };
 
     renderUsers();
+
+    let ttt = async () => {
+        await generateInfo();
+        generatePosts();
+    }
 
     document.addEventListener('scroll', checkPosition);
          
@@ -55,7 +63,7 @@ let renderUsers = async () => {
         const position = scrolled + screenHeight;
       
         if (position >= threshold) {
-          renderUsers();
+            ttt();
           console.log('Обращение к серверу')
         }
       }

@@ -1,5 +1,6 @@
 const RANDOM_API = 'https://randomuser.me/api/';
 const details = document.querySelector('.card');
+let statusScroll = 22;
 
 const getUser = async (url) => {
     const res = await fetch(url);
@@ -18,55 +19,40 @@ const generateInfo = async () => {
         </div>
         <p id="user_title">Hi, My name is</p>
         <p id="user_value" style="text-transform: capitalize;">${userName}</p>
-    </div>`; 
+    </div>`;
 };
- function users() {
-    for (let i = 0; i < 12; i++) {
-         generateInfo();  
-}
-}
-users()
 
-// document.addEventListener('scroll',  () => {
-//     if (window.scrollY + window.innerHeight > document.body.offsetHeight 
-//         && window.scrollY + window.innerHeight < document.body.offsetHeight + 10) {
-//         tttt();
-     
-//         console.log('window.scrollY')
-        
-// //    console.log(window.innerHeight)
-// //    console.log(document.body.offsetHeight)
-   
-//     }
-    
-// })
- 
+function users() {
+    for (let i = 0; i < 12; i++) {
+        generateInfo();
+    }
+}
+
 function checkPosition() {
-        
     const height = document.body.offsetHeight;
     const screenHeight = window.innerHeight;
-     
     const scrolled = window.scrollY;
-      
-    const threshold = height - screenHeight / 2;
-      
+    const threshold = height - screenHeight / 4;
     const position = scrolled + screenHeight;
-     
-    if (position >= threshold && position <= threshold + 80) {
-       
-            users();    
 
-       
-       console.log('вызов функции')
+    if (position >= threshold) {
+        statusScroll = 1;
+        console.log(statusScroll);
     }
-    console.log(scrolled)
-    console.log(height)
-    //  console.log(window.scrollY)
 }
-window.addEventListener('scroll',checkPosition)
-// checkPosition();
-      
 
+document.addEventListener('scroll', checkPosition);
 
- 
-  
+function addUsers() {
+    if (statusScroll === 1) {
+        users();
+        statusScroll = 0;
+        console.log(statusScroll);
+    }
+}
+
+setInterval(() => {
+    addUsers();
+}, 500);
+
+users();

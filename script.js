@@ -1,6 +1,6 @@
 const RANDOM_API = 'https://randomuser.me/api/';
 const details = document.querySelector('.card');
-let statusScroll = 22;
+let statusScroll = false;
 
 const getUser = async (url) => {
     const res = await fetch(url);
@@ -22,9 +22,14 @@ const generateInfo = async () => {
     </div>`;
 };
 
-function users() {
-    for (let i = 0; i < 12; i++) {
-        generateInfo();
+async function users() {
+    if (!statusScroll) {
+        statusScroll = true;
+        for (let i = 0; i < 12; i++) {
+            await generateInfo();
+        }
+        console.log('Вызов функции');
+        statusScroll = false;
     }
 }
 
@@ -36,23 +41,10 @@ function checkPosition() {
     const position = scrolled + screenHeight;
 
     if (position >= threshold) {
-        statusScroll = 1;
-        console.log(statusScroll);
+        users();
     }
 }
 
 document.addEventListener('scroll', checkPosition);
-
-function addUsers() {
-    if (statusScroll === 1) {
-        users();
-        statusScroll = 0;
-        console.log(statusScroll);
-    }
-}
-
-setInterval(() => {
-    addUsers();
-}, 500);
 
 users();
